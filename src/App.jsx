@@ -213,20 +213,31 @@ function App() {
   // DECREASE
   const decreaseQuantity = (id) => {
 
-    const updatedCart = cart
-      .map((item) =>
+  setCart(
+
+    cart
+
+      .map(item =>
+
         item.id === id
+
           ? {
-            ...item,
-            quantity: item.quantity - 1
-          }
+
+              ...item,
+
+              quantity: item.quantity - 1
+
+            }
+
           : item
+
       )
-      .filter((item) => item.quantity > 0)
 
-    setCart(updatedCart)
+      .filter(item => item.quantity > 0)
 
-  }
+  )
+
+}
 
   // TOTAL
   const totalPrice = cart.reduce(
@@ -430,8 +441,8 @@ function App() {
 
       {/* CHECKOUT */}
       <CheckoutPopup
-      increaseQuantity={increaseQuantity}
-decreaseQuantity={decreaseQuantity}
+        increaseQuantity={increaseQuantity}
+        decreaseQuantity={decreaseQuantity}
         handlePlaceOrder={handlePlaceOrder}
         pickupTime={pickupTime}
         setShowTimePopup={setShowTimePopup}
