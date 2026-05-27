@@ -96,34 +96,6 @@ function App() {
 
   }
 
-  const decreaseQuantity = (id) => {
-
-    setCart(
-
-      cart
-
-        .map(item =>
-
-          item.id === id
-
-            ? {
-
-              ...item,
-
-              quantity: item.quantity - 1
-
-            }
-
-            : item
-
-        )
-
-        .filter(item => item.quantity > 0)
-
-    )
-
-  }
-
   const categories = [
     {
       title: "PHIN",
