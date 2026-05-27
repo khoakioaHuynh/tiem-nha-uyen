@@ -174,6 +174,7 @@ function App() {
   }
 
   // INCREASE
+  // INCREASE
   const increaseQuantity = (id) => {
 
     const updatedCart = cart.map((item) =>
@@ -188,19 +189,18 @@ function App() {
     setCart(updatedCart)
 
   }
-
   // DECREASE
   const decreaseQuantity = (id) => {
 
-  setCart(
+    setCart(
 
-    cart
+      cart
 
-      .map(item =>
+        .map(item =>
 
-        item.id === id
+          item.id === id
 
-          ? {
+            ? {
 
               ...item,
 
@@ -208,15 +208,15 @@ function App() {
 
             }
 
-          : item
+            : item
 
-      )
+        )
 
-      .filter(item => item.quantity > 0)
+        .filter(item => item.quantity > 0)
 
-  )
+    )
 
-}
+  }
 
   // TOTAL
   const totalPrice = cart.reduce(
