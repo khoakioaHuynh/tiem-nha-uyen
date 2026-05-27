@@ -250,61 +250,7 @@ handlePlaceOrder,
 
             </div>
 
-           <button
-
-  onClick={handlePlaceOrder}
-
-  disabled={
-
-    loadingOrder ||
-
-    cart.length === 0 ||
-
-    !customerInfo?.name ||
-
-    !customerInfo?.phone
-
-  }
-
-  className={`
-
-    w-full
-    mt-8
-    py-5
-    rounded-3xl
-    text-2xl
-    font-black
-    duration-300
-
-    ${
-      loadingOrder ||
-
-      cart.length === 0 ||
-
-      !customerInfo?.name ||
-
-      !customerInfo?.phone
-
-        ? "bg-gray-400 text-white cursor-not-allowed"
-
-        : "bg-[#FF6B35] hover:scale-[1.02] text-white"
-    }
-
-  `}
-
->
-
-  {
-
-    loadingOrder
-
-      ? "Đang đặt hàng..."
-
-      : "Đặt Hàng!"
-
-  }
-
-</button>
+           
 
           </div>
 
