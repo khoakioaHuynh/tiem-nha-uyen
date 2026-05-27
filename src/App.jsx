@@ -16,49 +16,38 @@ import {
 function App() {
 const [loadingOrder, setLoadingOrder] = useState(false)
 
- const handlePlaceOrder = async () => {
+const handlePlaceOrder = async () => {
 
   if (cart.length === 0) {
 
     alert("Vui lòng chọn món")
-
     return
 
   }
 
   if (
+  !customerInfo?.name ||
+  !customerInfo?.phone
+) {
 
-    !customerInfo?.name ||
+  alert("Vui lòng nhập thông tin khách hàng")
 
-    !customerInfo?.phone
+  return
 
-  ) {
-
-    alert("Vui lòng nhập thông tin khách hàng")
-
-    return
-
-  }
- }
-
-
+}
 
   try {
+
+    setLoadingOrder(true)
 
     await addDoc(collection(db, "orders"), {
 
       customerInfo,
-
       pickupTime,
-
       cart,
-
       totalPrice,
-
-       paymentMethod: "Tiền mặt",
-
+      paymentMethod: "Tiền mặt",
       status: "pending",
-
       createdAt: new Date()
 
     })
@@ -69,13 +58,24 @@ const [loadingOrder, setLoadingOrder] = useState(false)
 
     setShowCheckout(false)
 
-  } catch (error) {
+  }
+
+  catch (error) {
 
     console.log(error)
 
     alert("Có lỗi xảy ra")
 
   }
+
+  finally {
+
+    setLoadingOrder(false)
+
+  }
+
+}
+ 
 
 }
   const categories = [
@@ -439,7 +439,6 @@ const [customerInfo, setCustomerInfo] = useState({
     </div>
 
   )
-
 
 
 export default App
