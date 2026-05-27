@@ -10,6 +10,7 @@ handlePlaceOrder,
   setShowCustomerForm,
   pickupTime,
   setShowTimePopup,
+
 }) {
 
   if (!showCheckout) return null
@@ -235,6 +236,19 @@ handlePlaceOrder,
               <p className="text-2xl font-black text-[#7A3200]">
                 {totalPrice.toLocaleString()}đ
               </p>
+              <div className="mt-10 sticky bottom-0 bg-[#F5F1EC] pt-5">
+
+  <button
+    onClick={handlePlaceOrder}
+    disabled={loadingOrder}
+    className="w-full bg-[#7A3200] text-white py-5 rounded-3xl text-2xl font-black"
+  >
+
+    {loadingOrder ? "Đang đặt hàng..." : "Đặt hàng"}
+
+  </button>
+
+</div>
 
             </div>
 
