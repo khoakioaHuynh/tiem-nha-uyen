@@ -39,40 +39,7 @@ const [loadingOrder, setLoadingOrder] = useState(false)
     return
 
   }
-
-  try {
-setLoadingOrder(true)
-    await addDoc(collection(db, "orders"), {
-
-      cart,
-
-      totalPrice,
-
-      customerInfo,
-
-      pickupTime,
-
-      status: "pending",
-
-      createdAt: new Date()
-
-    })
-setLoadingOrder(false)
-    alert("Đặt hàng thành công")
-
-    setCart([])
-
-    setShowCheckout(false)
-
-  }
-
-  catch (error) {
-    setLoadingOrder(false)
-    console.log(error)
-
-    alert("Có lỗi xảy ra")
-
-  }
+ }
 
 
 
@@ -473,6 +440,6 @@ const [customerInfo, setCustomerInfo] = useState({
 
   )
 
-}
+
 
 export default App
