@@ -15,78 +15,92 @@ function Admin() {
   const [orders, setOrders] = useState([])
   const [filterStatus, setFilterStatus] = useState("Tất cả")
   const totalOrders = orders.length
+  const toggleShop = async (status) => {
 
-const completedOrders = orders.filter(
-  (order) => order.status === "Hoàn thành"
-)
+    await updateDoc(
 
-const cancelledOrders = orders.filter(
-  (order) => order.status === "Đã huỷ"
-)
+      doc(db, "settings", "shop"),
 
-const totalRevenue = completedOrders.reduce(
-    
+      {
 
-  (total, order) => total + order.totalPrice,
+        shopOpen: status
 
-  0
+      }
 
-)
-const today = new Date()
+    )
 
-const todayRevenue = completedOrders.reduce(
+  }
+  const completedOrders = orders.filter(
+    (order) => order.status === "Hoàn thành"
+  )
 
-  (total, order) => {
+  const cancelledOrders = orders.filter(
+    (order) => order.status === "Đã huỷ"
+  )
 
-    if (!order.createdAt) return total
+  const totalRevenue = completedOrders.reduce(
 
-    const orderDate = order.createdAt.toDate()
 
-    const isToday =
+    (total, order) => total + order.totalPrice,
 
-      orderDate.getDate() === today.getDate() &&
-      orderDate.getMonth() === today.getMonth() &&
-      orderDate.getFullYear() === today.getFullYear()
+    0
 
-    return isToday
+  )
+  const today = new Date()
 
-      ? total + order.totalPrice
+  const todayRevenue = completedOrders.reduce(
 
-      : total
+    (total, order) => {
 
-  },
+      if (!order.createdAt) return total
 
-  0
+      const orderDate = order.createdAt.toDate()
 
-)
+      const isToday =
 
-const monthRevenue = completedOrders.reduce(
+        orderDate.getDate() === today.getDate() &&
+        orderDate.getMonth() === today.getMonth() &&
+        orderDate.getFullYear() === today.getFullYear()
 
-  (total, order) => {
+      return isToday
 
-    if (!order.createdAt) return total
+        ? total + order.totalPrice
 
-    const orderDate = order.createdAt.toDate()
+        : total
 
-    const isThisMonth =
+    },
 
-      orderDate.getMonth() === today.getMonth() &&
-      orderDate.getFullYear() === today.getFullYear()
+    0
 
-    return isThisMonth
+  )
 
-      ? total + order.totalPrice
+  const monthRevenue = completedOrders.reduce(
 
-      : total
+    (total, order) => {
 
-  },
+      if (!order.createdAt) return total
 
-  0
+      const orderDate = order.createdAt.toDate()
 
-)
+      const isThisMonth =
+
+        orderDate.getMonth() === today.getMonth() &&
+        orderDate.getFullYear() === today.getFullYear()
+
+      return isThisMonth
+
+        ? total + order.totalPrice
+
+        : total
+
+    },
+
+    0
+
+  )
 
   const [audioEnabled, setAudioEnabled] = useState(false)
-const previousOrdersLength = useRef(0)
+  const previousOrdersLength = useRef(0)
   const toggleAudio = () => {
 
     setAudioEnabled(!audioEnabled)
@@ -108,14 +122,13 @@ const previousOrdersLength = useRef(0)
           ...doc.data()
 
         }))
-if (
+        if (
 
-  previousOrdersLength.current > 0 &&
-  data.length > previousOrdersLength.current &&
-  audioEnabled
+          previousOrdersLength.current > 0 &&
+          data.length > previousOrdersLength.current &&
+          audioEnabled
 
-)   
-         {
+        ) {
 
           const audio = new Audio("/sounds/notification.mp3")
 
@@ -155,96 +168,96 @@ if (
         Quản lý đơn hàng
 
       </h1>
-     <div className="grid grid-cols-2 lg:grid-cols-6 gap-4 mb-8">
-        
-
-  <div className="bg-white rounded-3xl p-5">
-
-    <p className="text-gray-500">
-      Tổng đơn
-    </p>
-
-    <h2 className="text-3xl font-black text-[#7A3200] mt-2">
-
-      {totalOrders}
-
-    </h2>
-
-  </div>
-
-  <div className="bg-white rounded-3xl p-5">
-
-    <p className="text-gray-500">
-      Hoàn thành
-    </p>
-
-    <h2 className="text-3xl font-black text-green-500 mt-2">
-
-      {completedOrders.length}
-
-    </h2>
-
-  </div>
-
-  <div className="bg-white rounded-3xl p-5">
-
-    <p className="text-gray-500">
-      Đã huỷ
-    </p>
-
-    <h2 className="text-3xl font-black text-red-500 mt-2">
-
-      {cancelledOrders.length}
-
-    </h2>
-
-  </div>
-
-  <div className="bg-white rounded-3xl p-5">
-
-    <p className="text-gray-500">
-      Doanh thu
-    </p>
-    <div className="bg-white rounded-3xl p-5">
-
-  <p className="text-gray-500">
-    Hôm nay
-  </p>
-
-  <h2 className="text-3xl font-black text-blue-500 mt-2">
-
-    {todayRevenue.toLocaleString()}đ
-
-  </h2>
-
-</div>
-
-<div className="bg-white rounded-3xl p-5">
-
-  <p className="text-gray-500">
-    Tháng này
-  </p>
-
-  <h2 className="text-3xl font-black text-purple-500 mt-2">
-
-    {monthRevenue.toLocaleString()}đ
-
-  </h2>
-
-</div>
+      <div className="grid grid-cols-2 lg:grid-cols-6 gap-4 mb-8">
 
 
-  </div>
+        <div className="bg-white rounded-3xl p-5">
 
-</div>
+          <p className="text-gray-500">
+            Tổng đơn
+          </p>
+
+          <h2 className="text-3xl font-black text-[#7A3200] mt-2">
+
+            {totalOrders}
+
+          </h2>
+
+        </div>
+
+        <div className="bg-white rounded-3xl p-5">
+
+          <p className="text-gray-500">
+            Hoàn thành
+          </p>
+
+          <h2 className="text-3xl font-black text-green-500 mt-2">
+
+            {completedOrders.length}
+
+          </h2>
+
+        </div>
+
+        <div className="bg-white rounded-3xl p-5">
+
+          <p className="text-gray-500">
+            Đã huỷ
+          </p>
+
+          <h2 className="text-3xl font-black text-red-500 mt-2">
+
+            {cancelledOrders.length}
+
+          </h2>
+
+        </div>
+
+        <div className="bg-white rounded-3xl p-5">
+
+          <p className="text-gray-500">
+            Doanh thu
+          </p>
+          <div className="bg-white rounded-3xl p-5">
+
+            <p className="text-gray-500">
+              Hôm nay
+            </p>
+
+            <h2 className="text-3xl font-black text-blue-500 mt-2">
+
+              {todayRevenue.toLocaleString()}đ
+
+            </h2>
+
+          </div>
+
+          <div className="bg-white rounded-3xl p-5">
+
+            <p className="text-gray-500">
+              Tháng này
+            </p>
+
+            <h2 className="text-3xl font-black text-purple-500 mt-2">
+
+              {monthRevenue.toLocaleString()}đ
+
+            </h2>
+
+          </div>
+
+
+        </div>
+
+      </div>
 
       <div className="flex flex-wrap gap-3 mb-6">
 
-  <button
+        <button
 
-    onClick={toggleAudio}
+          onClick={toggleAudio}
 
-    className={`
+          className={`
 
       px-5
       py-3
@@ -253,239 +266,274 @@ if (
       text-white
       duration-300
 
-      ${
+      ${audioEnabled
+              ? "bg-green-500"
+              : "bg-gray-500"
 
-        audioEnabled
-          ? "bg-green-500"
-          : "bg-gray-500"
-
-      }
+            }
 
     `}
 
-  >
+        >
 
-    {
+          {
 
-      audioEnabled
+            audioEnabled
 
-        ? "🔔 Đã bật âm thanh"
+              ? "🔔 Đã bật âm thanh"
 
-        : "🔕 Đang tắt âm thanh"
+              : "🔕 Đang tắt âm thanh"
 
-    }
+          }
 
-  </button>
+        </button>
+        <button
 
-  <button
+          onClick={() => toggleShop(true)}
 
-    onClick={() => setFilterStatus("Tất cả")}
+          className="
 
-    className={`
+    px-5
+    py-3
+    rounded-2xl
+    font-bold
+    bg-green-500
+    text-white
+
+  "
+
+        >
+
+          🟢 Mở quán
+
+        </button>
+
+        <button
+
+          onClick={() => toggleShop(false)}
+
+          className="
+
+    px-5
+    py-3
+    rounded-2xl
+    font-bold
+    bg-red-500
+    text-white
+
+  "
+
+        >
+
+          🔴 Tạm nghỉ
+
+        </button>
+
+        <button
+
+          onClick={() => setFilterStatus("Tất cả")}
+
+          className={`
 
       px-4
       py-3
       rounded-2xl
       font-bold
 
-      ${
-        filterStatus === "Tất cả"
+      ${filterStatus === "Tất cả"
 
-          ? "bg-[#7A3200] text-white"
+              ? "bg-[#7A3200] text-white"
 
-          : "bg-white text-[#7A3200]"
-      }
+              : "bg-white text-[#7A3200]"
+            }
 
     `}
 
-  >
+        >
 
-    Tất cả
+          Tất cả
 
-  </button>
+        </button>
 
-  <button
+        <button
 
-    onClick={() => setFilterStatus("pending")}
+          onClick={() => setFilterStatus("pending")}
 
-    className={`
+          className={`
 
       px-4
       py-3
       rounded-2xl
       font-bold
 
-      ${
-        filterStatus === "pending"
+      ${filterStatus === "pending"
 
-          ? "bg-orange-500 text-white"
+              ? "bg-orange-500 text-white"
 
-          : "bg-white text-orange-500"
-      }
+              : "bg-white text-orange-500"
+            }
 
     `}
 
-  >
+        >
 
-    Mới nhất
+          Mới nhất
 
-  </button>
+        </button>
 
-  <button
+        <button
 
-    onClick={() => setFilterStatus("Hoàn thành")}
+          onClick={() => setFilterStatus("Hoàn thành")}
 
-    className={`
+          className={`
 
       px-4
       py-3
       rounded-2xl
       font-bold
 
-      ${
-        filterStatus === "Hoàn thành"
+      ${filterStatus === "Hoàn thành"
 
-          ? "bg-green-500 text-white"
+              ? "bg-green-500 text-white"
 
-          : "bg-white text-green-500"
-      }
+              : "bg-white text-green-500"
+            }
 
     `}
 
-  >
+        >
 
-    Hoàn thành
+          Hoàn thành
 
-  </button>
+        </button>
 
-  <button
+        <button
 
-    onClick={() => setFilterStatus("Đã huỷ")}
+          onClick={() => setFilterStatus("Đã huỷ")}
 
-    className={`
+          className={`
 
       px-4
       py-3
       rounded-2xl
       font-bold
 
-      ${
-        filterStatus === "Đã huỷ"
+      ${filterStatus === "Đã huỷ"
 
-          ? "bg-red-500 text-white"
+              ? "bg-red-500 text-white"
 
-          : "bg-white text-red-500"
-      }
+              : "bg-white text-red-500"
+            }
 
     `}
 
-  >
+        >
 
-    Đã huỷ
+          Đã huỷ
 
-  </button>
+        </button>
 
-</div>
+      </div>
 
       <div className="space-y-5">
 
         {
 
-  orders
+          orders
 
-    .filter((order) => {
+            .filter((order) => {
 
-      if (filterStatus === "Tất cả") {
+              if (filterStatus === "Tất cả") {
 
-        return true
+                return true
 
-      }
+              }
 
-      if (filterStatus === "pending") {
+              if (filterStatus === "pending") {
 
-        return order.status === "pending"
+                return order.status === "pending"
 
-      }
+              }
 
-      return order.status === filterStatus
+              return order.status === filterStatus
 
-    })
+            })
 
-    .sort((a, b) => {
+            .sort((a, b) => {
 
-      if (!a.createdAt || !b.createdAt) {
+              if (!a.createdAt || !b.createdAt) {
 
-        return 0
+                return 0
 
-      }
+              }
 
-      return (
+              return (
 
-        b.createdAt.seconds -
+                b.createdAt.seconds -
 
-        a.createdAt.seconds
+                a.createdAt.seconds
 
-      )
+              )
 
-    })
+            })
 
-    .map((order) => (
+            .map((order) => (
 
-          <div
+              <div
 
-            key={order.id}
+                key={order.id}
 
-            className="bg-white rounded-3xl p-5"
+                className="bg-white rounded-3xl p-5"
 
-          >
+              >
 
-            <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center">
 
-              <div>
+                  <div>
 
-                <h2 className="text-2xl font-black text-[#7A3200]">
+                    <h2 className="text-2xl font-black text-[#7A3200]">
 
-                  {order.customerInfo?.name || "Khách"}
+                      {order.customerInfo?.name || "Khách"}
 
-                </h2>
+                    </h2>
 
-                <p className="text-gray-500 mt-1">
+                    <p className="text-gray-500 mt-1">
 
-                  📞 {order.customerInfo?.phone}
+                      📞 {order.customerInfo?.phone}
 
-                </p>
-                <p className="text-gray-500 mt-1">  
-</p>
+                    </p>
+                    <p className="text-gray-500 mt-1">
+                    </p>
 
-                <p className="text-gray-500">
+                    <p className="text-gray-500">
 
-                  📍 {order.customerInfo?.address}
+                      📍 {order.customerInfo?.address}
 
-                </p>
-                <p className="text-gray-500 mt-1">
+                    </p>
+                    <p className="text-gray-500 mt-1">
 
-  🕒 {
+                      🕒 {
 
-    order.createdAt
+                        order.createdAt
 
-      ? new Date(
-          order.createdAt.seconds * 1000
-        ).toLocaleString("vi-VN")
+                          ? new Date(
+                            order.createdAt.seconds * 1000
+                          ).toLocaleString("vi-VN")
 
-      : "Không có thời gian"
+                          : "Không có thời gian"
 
-  }
+                      }
 
-</p>
-                
+                    </p>
 
-              </div>
 
-              <div>
+                  </div>
 
-                <span
+                  <div>
 
-                  className={`
+                    <span
+
+                      className={`
 
                     px-4
                     py-2
@@ -493,213 +541,208 @@ if (
                     text-white
                     font-bold
 
-                    ${
+                    ${order.status === "pending"
 
-                      order.status === "pending"
+                          ? "bg-orange-500"
 
-                        ? "bg-orange-500"
+                          : order.status === "Đã xác nhận"
 
-                        : order.status === "Đã xác nhận"
+                            ? "bg-blue-500"
 
-                        ? "bg-blue-500"
+                            : order.status === "Hoàn thành"
 
-                        : order.status === "Hoàn thành"
+                              ? "bg-green-500"
 
-                        ? "bg-green-500"
+                              : "bg-red-500"
 
-                        : "bg-red-500"
-
-                    }
+                        }
 
                   `}
 
-                >
+                    >
 
-                  {order.status}
+                      {order.status}
 
-                </span>
-
-              </div>
-
-            </div>
-
-            <div className="mt-5 space-y-3">
-
-              {order.cart?.map((item) => (
-
-                <div
-
-                  key={item.id}
-
-                  className="bg-[#F5F1EC] rounded-2xl p-4"
-
-                >
-
-                  <div className="flex justify-between">
-
-                    <div>
-
-                      <h3 className="font-bold text-[#7A3200]">
-
-                        {item.name}
-
-                      </h3>
-
-                      <p className="text-gray-500">
-
-                        SL: {item.quantity}
-
-                      </p>
-
-                      {item.note && (
-
-                        <p className="text-sm mt-2">
-
-                          📝 {item.note}
-
-                        </p>
-
-                      )}
-
-                    </div>
-
-                    <p className="font-bold text-[#FF6B35]">
-
-                      {(item.price * item.quantity).toLocaleString()}đ
-
-                    </p>
+                    </span>
 
                   </div>
 
                 </div>
 
-              ))}
+                <div className="mt-5 space-y-3">
 
-            </div>
+                  {order.cart?.map((item) => (
 
-            <div className="mt-5 border-t pt-5 flex justify-between items-center">
+                    <div
 
-              <div>
+                      key={item.id}
 
-                <p className="text-gray-500">
+                      className="bg-[#F5F1EC] rounded-2xl p-4"
 
-                  ⏰ {order.pickupTime}
+                    >
 
-                </p>
+                      <div className="flex justify-between">
 
-                <h3 className="text-3xl font-black text-[#FF6B35] mt-2">
+                        <div>
 
-                  {order.totalPrice?.toLocaleString()}đ
+                          <h3 className="font-bold text-[#7A3200]">
 
-                </h3>
+                            {item.name}
+
+                          </h3>
+
+                          <p className="text-gray-500">
+
+                            SL: {item.quantity}
+
+                          </p>
+
+                          {item.note && (
+
+                            <p className="text-sm mt-2">
+
+                              📝 {item.note}
+
+                            </p>
+
+                          )}
+
+                        </div>
+
+                        <p className="font-bold text-[#FF6B35]">
+
+                          {(item.price * item.quantity).toLocaleString()}đ
+
+                        </p>
+
+                      </div>
+
+                    </div>
+
+                  ))}
+
+                </div>
+
+                <div className="mt-5 border-t pt-5 flex justify-between items-center">
+
+                  <div>
+
+                    <p className="text-gray-500">
+
+                      ⏰ {order.pickupTime}
+
+                    </p>
+
+                    <h3 className="text-3xl font-black text-[#FF6B35] mt-2">
+
+                      {order.totalPrice?.toLocaleString()}đ
+
+                    </h3>
+
+                  </div>
+
+                  <div className="flex gap-3 flex-wrap">
+
+                    <button
+
+                      disabled={order.status !== "pending"}
+
+                      onClick={() =>
+                        updateStatus(order.id, "Đã xác nhận")
+                      }
+
+                      className={`
+
+    px-4
+    py-3
+    rounded-2xl
+    text-white
+
+    ${order.status !== "pending"
+
+                          ? "bg-gray-400 cursor-not-allowed"
+
+                          : "bg-blue-500"
+
+                        }
+
+  `}
+
+                    >
+
+                      Xác nhận
+
+                    </button>
+
+                    <button
+
+                      disabled={order.status === "Hoàn thành"}
+
+                      onClick={() =>
+                        updateStatus(order.id, "Hoàn thành")
+                      }
+
+                      className={`
+
+    px-4
+    py-3
+    rounded-2xl
+    text-white
+
+    ${order.status === "Hoàn thành"
+
+                          ? "bg-gray-400 cursor-not-allowed"
+
+                          : "bg-green-500"
+
+                        }
+
+  `}
+
+                    >
+
+                      Hoàn thành
+
+                    </button>
+
+                    <button
+
+                      disabled={order.status === "Đã huỷ"}
+
+                      onClick={() =>
+                        updateStatus(order.id, "Đã huỷ")
+                      }
+
+                      className={`
+
+    px-4
+    py-3
+    rounded-2xl
+    text-white
+
+    ${order.status === "Đã huỷ"
+
+                          ? "bg-gray-400 cursor-not-allowed"
+
+                          : "bg-red-500"
+
+                        }
+
+  `}
+
+                    >
+
+                      Huỷ đơn
+
+                    </button>
+
+                  </div>
+
+                </div>
 
               </div>
 
-              <div className="flex gap-3 flex-wrap">
-
-               <button
-
-  disabled={order.status !== "pending"}
-
-  onClick={() =>
-    updateStatus(order.id, "Đã xác nhận")
-  }
-
-  className={`
-
-    px-4
-    py-3
-    rounded-2xl
-    text-white
-
-    ${
-      order.status !== "pending"
-
-        ? "bg-gray-400 cursor-not-allowed"
-
-        : "bg-blue-500"
-
-    }
-
-  `}
-
->
-
-  Xác nhận
-
-</button>
-
-                <button
-
-  disabled={order.status === "Hoàn thành"}
-
-  onClick={() =>
-    updateStatus(order.id, "Hoàn thành")
-  }
-
-  className={`
-
-    px-4
-    py-3
-    rounded-2xl
-    text-white
-
-    ${
-      order.status === "Hoàn thành"
-
-        ? "bg-gray-400 cursor-not-allowed"
-
-        : "bg-green-500"
-
-    }
-
-  `}
-
->
-
-  Hoàn thành
-
-</button>
-
-                <button
-
-  disabled={order.status === "Đã huỷ"}
-
-  onClick={() =>
-    updateStatus(order.id, "Đã huỷ")
-  }
-
-  className={`
-
-    px-4
-    py-3
-    rounded-2xl
-    text-white
-
-    ${
-      order.status === "Đã huỷ"
-
-        ? "bg-gray-400 cursor-not-allowed"
-
-        : "bg-red-500"
-
-    }
-
-  `}
-
->
-
-  Huỷ đơn
-
-</button>
-
-              </div>
- 
-            </div>
-
-          </div>
-
-        ))}
+            ))}
 
       </div>
 

@@ -1,23 +1,46 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import ProductCard from "./components/ProductCard"
 import Cart from "./components/Cart"
 import CheckoutPopup from "./components/CheckoutPopup"
 import CustomerForm from "./components/CustomerForm"
 import TimePopup from "./components/TimePopup"
 import { db } from "./firebase"
-
-
 import {
-
+  doc,
+  onSnapshot,
   collection,
   addDoc
 
 } from "firebase/firestore"
+
 function App() {
+  const [shopOpen, setShopOpen] = useState(true)
   const [loadingOrder, setLoadingOrder] = useState(false)
+  useEffect(() => {
 
+    const unsubscribe = onSnapshot(
+
+      doc(db, "settings", "shop"),
+
+      (snapshot) => {
+
+        setShopOpen(snapshot.data().shopOpen)
+
+      }
+
+    )
+
+    return () => unsubscribe()
+
+  }, [])
   const handlePlaceOrder = async () => {
+    if (!shopOpen) {
 
+      alert("Quán hiện đang tạm nghỉ !!")
+
+      return
+
+    }
     if (cart.length === 0) {
 
       alert("Vui lòng chọn món")
@@ -75,6 +98,7 @@ function App() {
     }
 
   }
+
   const categories = [
     {
       title: "PHIN",
