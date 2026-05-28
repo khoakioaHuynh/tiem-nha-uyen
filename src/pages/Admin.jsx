@@ -13,6 +13,7 @@ import { db } from "../firebase"
 function Admin() {
 
   const [orders, setOrders] = useState([])
+  const [shopOpen, setShopOpen] = useState(true)
   const [filterStatus, setFilterStatus] = useState("Tất cả")
   const totalOrders = orders.length
   const toggleShop = async (status) => {
@@ -291,20 +292,21 @@ function Admin() {
 
           onClick={() => toggleShop(true)}
 
-          className="
+          className={`
+  px-5
+  py-3
+  rounded-2xl
+  font-bold
+  text-white
 
-    px-5
-    py-3
-    rounded-2xl
-    font-bold
-    bg-green-500
-    text-white
-
-  "
+  ${shopOpen
+              ? "bg-green-600"
+              : "bg-gray-400"}
+`}
 
         >
 
-          🟢 Mở quán
+          {shopOpen ? "🟢 Đang mở quán" : "Mở quán"}
 
         </button>
 
@@ -312,20 +314,21 @@ function Admin() {
 
           onClick={() => toggleShop(false)}
 
-          className="
+          className={`
+  px-5
+  py-3
+  rounded-2xl
+  font-bold
+  text-white
 
-    px-5
-    py-3
-    rounded-2xl
-    font-bold
-    bg-red-500
-    text-white
-
-  "
+  ${!shopOpen
+              ? "bg-red-600"
+              : "bg-gray-400"}
+`}
 
         >
 
-          🔴 Tạm nghỉ
+          {!shopOpen ? "🔴 Đang tạm nghỉ" : "Tạm nghỉ"}
 
         </button>
 

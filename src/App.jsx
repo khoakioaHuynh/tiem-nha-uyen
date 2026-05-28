@@ -24,7 +24,7 @@ function App() {
 
       (snapshot) => {
 
-        setShopOpen(snapshot.data().shopOpen)
+        setShopOpen(snapshot.data()?.shopOpen)
 
       }
 
