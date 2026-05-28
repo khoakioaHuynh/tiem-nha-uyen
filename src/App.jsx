@@ -252,7 +252,7 @@ function App() {
         <div className="mt-4 space-y-2 text-gray-500">
 
           <p>📍 KCN Giao Long</p>
-          <p>🕐 07:00 - 21:00</p>
+          <p>🕐 07:00 - 20:00</p>
           <p>☎️ 0782 870 250</p>
 
         </div>
