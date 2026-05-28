@@ -4,7 +4,9 @@ import {
   collection,
   onSnapshot,
   doc,
-  updateDoc
+  updateDoc,
+   deleteDoc,
+  setDoc
 
 } from "firebase/firestore"
 
@@ -18,19 +20,14 @@ function Admin() {
   const totalOrders = orders.length
   const toggleShop = async (status) => {
 
-    await updateDoc(
+  await setDoc(
+    doc(db, "settings", "shop"),
+    {
+      shopOpen: status
+    }
+  )
 
-      doc(db, "settings", "shop"),
-
-      {
-
-        shopOpen: status
-
-      }
-
-    )
-
-  }
+}
   const completedOrders = orders.filter(
     (order) => order.status === "Hoàn thành"
   )
@@ -147,7 +144,27 @@ function Admin() {
     return () => unsubscribe()
 
   }, [audioEnabled])
+  useEffect(() => {
 
+  const unsubscribe = onSnapshot(
+
+    doc(db, "settings", "shop"),
+
+    (snapshot) => {
+
+      if (snapshot.exists()) {
+
+        setShopOpen(snapshot.data().shopOpen)
+
+      }
+
+    }
+
+  )
+
+  return () => unsubscribe()
+
+}, [])
   const updateStatus = async (id, status) => {
 
     const orderRef = doc(db, "orders", id)
@@ -159,6 +176,7 @@ function Admin() {
     })
 
   }
+ 
 
   return (
 
