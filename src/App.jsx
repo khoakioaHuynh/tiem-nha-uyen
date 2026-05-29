@@ -115,7 +115,7 @@ function App() {
       title: "TRÀ",
       items: [
         { id: 6, name: "Trà Đường", price: 10000 },
-        { id: 7, name: "Trà Vải", price: 22000 },
+        { id: 7, name: "Trà Vải", price: 20000 },
         { id: 8, name: "Trà Mãng Cầu thạch sợi dừa", price: 20000 },
         { id: 9, name: "Trà tắc xí muội", price: 15000 },
         { id: 10, name: "Trà Chanh dây tươi", price: 15000 },
